@@ -61,30 +61,36 @@ def tokenizer(array):
     for index, row in enumerate(sort_pair):
         if sort_pair[index][0] == "":
             del sort_pair[index]
-    output_file_dictionary = open(output_file_dictionary_name, 'w')
-    output_file_postings = open(output_file_postings_name, 'w')
+
 
     array_posting = []
     for row in merge_item:
         posting = merge_item[row][2]
         for item in posting:
-            _array = []
-            _array.append(item)
-            _array.append(posting[item])
+            _array = (item, posting[item])
+            # _array.append(item)
+            # _array.append(posting[item])
             # for x in range(posting[item]):
             array_posting.append(_array)
     array_dictionary = []
     offset = 0
     for row in merge_item:
-        _array = []
-        _array.append(row)
-        _array.append(merge_item[row][1])
-        _array.append(offset)
+        _array = (row, merge_item[row][1], offset)
+        # _array.append(row)
+        # _array.append(merge_item[row][1])
+        # _array.append(offset)
         offset = offset + merge_item[row][2].__len__()
         array_dictionary.append(_array)
     # array_posting = sorted(array_posting, key=lambda x: x[0], reverse=False)
-    np.savetxt(output_file_postings_name, np.array(array_posting), fmt="%s")
-    np.savetxt(output_file_dictionary_name, np.array(array_dictionary), fmt="%s")
+    output_file_dictionary = open(output_file_dictionary_name, 'w')
+
+    output_file_postings = open(output_file_postings_name, 'w')
+    with output_file_postings as fp:
+        fp.write('\n'.join('({}, {})'.format(x[0], x[1]) for x in array_posting))
+    with output_file_dictionary as fp:
+        fp.write('\n'.join('({}, {}, {})'.format(x[0], x[1], x[2]) for x in array_dictionary))
+    # np.savetxt(output_file_postings_name, np.array(array_posting), fmt="%s")
+    # np.savetxt(output_file_dictionary_name, np.array(array_dictionary), fmt="%s")
     # array_posting.append(merge_item[])
 try:
     source_file = open(source_file_name, 'r')

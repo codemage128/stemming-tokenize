@@ -1,2 +1,2 @@
-pip install -r requirements.txt
-python index.py
+pip install -r requirements.txt&
+python index.py&
