@@ -71,9 +71,8 @@ def tokenizer(array):
             _array = []
             _array.append(item)
             _array.append(posting[item])
-            for x in range(posting[item]):
-                array_posting.append(_array)
-
+            # for x in range(posting[item]):
+            array_posting.append(_array)
     array_dictionary = []
     offset = 0
     for row in merge_item:
@@ -81,7 +80,7 @@ def tokenizer(array):
         _array.append(row)
         _array.append(merge_item[row][1])
         _array.append(offset)
-        offset = offset + merge_item[row][1]
+        offset = offset + merge_item[row][2].__len__()
         array_dictionary.append(_array)
     array_posting = sorted(array_posting, key=lambda x: x[0], reverse=False)
     np.savetxt(output_file_postings_name, np.array(array_posting), fmt="%s")
